@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import Link from "next/link";
 
 interface ProcessedData {
   numbers: number[];
@@ -77,49 +78,57 @@ export default function JsonProcessor() {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <Card className="w-full max-w-2xl mx-auto">
-        <CardHeader>
-          <CardTitle>JSON Processor</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="jsonInput">API Input</Label>
-            <Input
-              id="jsonInput"
-              value={jsonInput}
-              onChange={(e) => setJsonInput(e.target.value)}
-              placeholder='{"data":["A","1","B","2"]}'
-            />
-          </div>
-          <Button onClick={processJson} className="w-full">
-            Submit
-          </Button>
-          {processedData && (
+    <div className="flex  flex-col items-center justify-center">
+      <div className="container mx-auto my-auto p-4">
+        <Card className="w-full max-w-2xl mx-auto">
+          <CardHeader>
+            <CardTitle>JSON Processor</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="filter">Multi Filter</Label>
-              <Select onValueChange={setSelectedFilter} value={selectedFilter}>
-                <SelectTrigger id="filter">
-                  <SelectValue placeholder="Select filter" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="numbers">Numbers</SelectItem>
-                  <SelectItem value="alphabets">Alphabets</SelectItem>
-                  <SelectItem value="highest_lowercase">
-                    Highest Lowercase Alphabet
-                  </SelectItem>
-                </SelectContent>
-              </Select>
+              <Label htmlFor="jsonInput">API Input</Label>
+              <Input
+                id="jsonInput"
+                value={jsonInput}
+                onChange={(e) => setJsonInput(e.target.value)}
+                placeholder='{"data":["A","1","B","2"]}'
+              />
             </div>
-          )}
-          {processedData && (
-            <div className="mt-4">
-              <h3 className="font-semibold mb-2">Filtered Response</h3>
-              <p>{getFilteredResponse()}</p>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+            <Button onClick={processJson} className="w-full">
+              Submit
+            </Button>
+            {processedData && (
+              <div className="space-y-2">
+                <Label htmlFor="filter">Multi Filter</Label>
+                <Select
+                  onValueChange={setSelectedFilter}
+                  value={selectedFilter}
+                >
+                  <SelectTrigger id="filter">
+                    <SelectValue placeholder="Select filter" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="numbers">Numbers</SelectItem>
+                    <SelectItem value="alphabets">Alphabets</SelectItem>
+                    <SelectItem value="highest_lowercase">
+                      Highest Lowercase Alphabet
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+            {processedData && (
+              <div className="mt-4">
+                <h3 className="font-semibold mb-2">Filtered Response</h3>
+                <p>{getFilteredResponse()}</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+      <Button asChild className="bg-white text-black" variant="secondary">
+        <Link href={`/api-docs`}>API DOCS</Link>
+      </Button>
     </div>
   );
 }
