@@ -66,7 +66,6 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-
 export async function GET() {
-  return NextResponse.json({ operation_code: 1 });
+  return NextResponse.json({ operation_code: 1 }, { status: 201 });
 }
