@@ -21,7 +21,7 @@ interface ProcessedData {
 
 export default function JsonProcessor() {
   const [jsonInput, setJsonInput] = useState(
-    '{"data":["M","1","334","4","B"]}'
+    '{ "data": ["M", "1", "334", "4", "B", "a", "c", "z"] }'
   );
   const [processedData, setProcessedData] = useState<ProcessedData | null>(
     null

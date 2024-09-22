@@ -1,4 +1,11 @@
 import { useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 
 interface FilteredResponseProps {
   response: ResponseType;
@@ -14,8 +21,8 @@ export function FilteredResponse({ response }: FilteredResponseProps) {
   };
 
   const filteredData = filter.reduce((acc, key) => {
-    if (response[key]) {
-      acc[key] = response[key];
+    if (response[key as keyof ResponseType]) {
+      acc[key] = response[key as keyof ResponseType];
     }
     return acc;
   }, {} as Partial<ResponseType>);

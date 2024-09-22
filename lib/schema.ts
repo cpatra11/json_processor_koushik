@@ -10,7 +10,7 @@ export const responseSchema = z.object({
   user_id: z.string(),
   email: z.string().email(),
   roll_number: z.string(),
-  numbers: z.array(z.number()),
+  numbers: z.array(z.string()),
   alphabets: z.array(z.string()),
   highest_lowercase_alphabet: z.array(z.string()),
   file_valid: z.boolean(),

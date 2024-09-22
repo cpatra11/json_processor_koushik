@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { inputSchema, InputType } from "@/lib/schema";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -14,6 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
+import { inputSchema, InputType } from "@/lib/schema";
 
 interface JsonFormProps {
   onSubmit: (data: InputType) => void;
@@ -24,17 +24,20 @@ export function JsonForm({ onSubmit }: JsonFormProps) {
 
   const form = useForm<InputType>({
     resolver: zodResolver(inputSchema),
-    defaultValues: { data: "", file_b64: "" },
+    defaultValues: { data: [], file_b64: "" },
   });
 
   const handleSubmit = (values: InputType) => {
     try {
-      const parsedData = JSON.parse(values.data);
-      if (!Array.isArray(parsedData)) {
-        throw new Error("Input must be an array");
+      // Parse the 'data' input from JSON
+      const parsedData = JSON.parse(values.data as unknown as string);
+
+      if (Array.isArray(parsedData)) {
+        onSubmit({ data: parsedData, file_b64: values.file_b64 });
+        setError(null);
+      } else {
+        setError("Invalid JSON format: 'data' should be an array.");
       }
-      onSubmit({ data: values.data, file_b64: values.file_b64 });
-      setError(null);
     } catch (err) {
       setError("Invalid JSON input");
     }
@@ -50,7 +53,11 @@ export function JsonForm({ onSubmit }: JsonFormProps) {
             <FormItem>
               <FormLabel>JSON Input</FormLabel>
               <FormControl>
-                <Textarea placeholder='["A", "1", "B", "2"]' {...field} />
+                <Textarea
+                  placeholder='[ "M", "1", "334", "4", "B" ]' // Adjust the placeholder to be an array
+                  value={JSON.stringify(field.value)} // Convert array to string for display
+                  onChange={(e) => field.onChange(e.target.value)} // Capture the string input
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
